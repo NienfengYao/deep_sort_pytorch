@@ -135,3 +135,16 @@ Then you can try [train.py](deep_sort/deep/train.py) to train your own parameter
 - paper: [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf)
 
 - code: [Joseph Redmon/yolov3](https://pjreddie.com/darknet/yolo/)
+
+
+## Train ReID model experiment.
+* ReID model train/test with various dataset.
+  * Download Market-1501 Dataset(http://zheng-lab.cecs.anu.edu.au/Project/project_reid.html), execute prepare.py
+  * Download Carla-Berkeley Dataset(https://www2.eecs.berkeley.edu/Pubs/TechRpts/2020/EECS-2020-81.pdf), execute prepare_crop.py
+  * Generate dataset from Carla-Simulator with https://github.com/NienfengYao/CARLA-2DBBox, execute prepare_carla.py
+* train and test	
+```
+python3 train.py --data-dir Market-1501-v15.09.15/pytorch/
+python3 test.py --data-dir Market-1501-v15.09.15/pytorch/ (Note: the num_classes have to match your trained dataset)
+python3 evaluate.py
+```
