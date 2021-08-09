@@ -37,7 +37,9 @@ galleryloader = torch.utils.data.DataLoader(
 )
 
 # net definition
-net = Net(reid=True)
+net = Net(reid=True) # for Market-1501-v15.09.15
+# net = Net(num_classes=34, reid=True) # for Carla-Berkeley
+# net = Net(num_classes=78, reid=True) # for our Carla Simulator
 assert os.path.isfile("./checkpoint/ckpt.t7"), "Error: no checkpoint file found!"
 print('Loading from checkpoint/ckpt.t7')
 checkpoint = torch.load("./checkpoint/ckpt.t7")
@@ -52,6 +54,13 @@ query_labels = torch.tensor([]).long()
 gallery_features = torch.tensor([]).float()
 gallery_labels = torch.tensor([]).long()
 
+"""
+from torchsummary import summary
+# print(net)
+summary(net, (3, 128, 64))
+exit(1)
+"""
+
 with torch.no_grad():
     for idx,(inputs,labels) in enumerate(queryloader):
         inputs = inputs.to(device)
@@ -64,8 +73,9 @@ with torch.no_grad():
         features = net(inputs).cpu()
         gallery_features = torch.cat((gallery_features, features), dim=0)
         gallery_labels = torch.cat((gallery_labels, labels))
-
-gallery_labels -= 2
+ 
+if 'Market-1501-v15.09.15' in args.data_dir:
+    gallery_labels -= 2  # only for Market-1501-v15.09.15
 
 # save features
 features = {

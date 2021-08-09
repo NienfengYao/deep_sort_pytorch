@@ -27,8 +27,10 @@ if torch.cuda.is_available() and not args.no_cuda:
 # data loading
 root = args.data_dir
 train_dir = os.path.join(root,"train")
-test_dir = os.path.join(root,"test")
+# test_dir = os.path.join(root,"test")
+test_dir = os.path.join(root,"train")
 transform_train = torchvision.transforms.Compose([
+    torchvision.transforms.Resize((128,64)),
     torchvision.transforms.RandomCrop((128,64),padding=4),
     torchvision.transforms.RandomHorizontalFlip(),
     torchvision.transforms.ToTensor(),
